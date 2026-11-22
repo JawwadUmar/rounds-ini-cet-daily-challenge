@@ -32,7 +32,7 @@ test('full-PYQ challenges label exam year and difficulty, and continue unscored 
   })!;
   const qs=questionsForDate(date),first=qs[0],reviewIndex=qs.findIndex(q=>q.reviewOnly);
   await page.clock.install({time:new Date(`${date}T06:00:00Z`)});await page.goto('/');
-  await expect(page.locator('.source-tag')).toHaveText(`INICET ${first.paperSession} · Q${first.printedNumber}`);
+  await expect(page.locator('.source-tag')).toHaveText(`INI-CET ${first.paperSession} · Q${first.printedNumber}`);
   await expect(page.locator('.difficulty')).toHaveText(first.difficultyEstimated?`${first.difficulty} · est.`:first.difficulty!);
   for(let i=0;i<reviewIndex;i++)await page.getByRole('button',{name:'Next question',exact:true}).click();
   await page.getByRole('button',{name:'Continue · not scored'}).click();

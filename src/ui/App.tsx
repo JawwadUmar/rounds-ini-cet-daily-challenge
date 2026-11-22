@@ -73,7 +73,7 @@ export function App() {
   const shareText=done?resultText(record,stats.current):'';
   async function copyResult(){setToast(await copyText(shareText)?'Result copied.':'Select the result text to copy it.');}
   async function shareResult(){
-    try{if(navigator.share)await navigator.share({title:'INICET Daily Challenge',text:shareText});else await copyResult();}
+    try{if(navigator.share)await navigator.share({title:'INI-CET Daily Challenge',text:shareText});else await copyResult();}
     catch(e){if(!(e instanceof DOMException&&e.name==='AbortError'))await copyResult();}
   }
   const links=navigation.map(([id,label])=><button key={id} aria-current={page===id?'page':undefined} onClick={()=>goPage(id)}>{label}</button>);
@@ -81,6 +81,7 @@ export function App() {
     <a href="#main-content" className="skip-link">Skip to content</a>
     <header className="masthead"><div className="masthead-inner">
       <button className="brand" aria-label="Rounds home" onClick={()=>goPage('daily')}><span className="brand-mark"><BookOpen size={21} strokeWidth={1.5}/></span><span>rounds<span>.</span></span></button>
+      <div className="exam-identity"><span>PREPARATION FOR</span><strong>INI-CET</strong></div>
       <nav className="desktop-nav" aria-label="Main navigation">{links}</nav>
       <div className="mast-tools"><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} title={dark?'Light theme':'Dark theme'} disabled={busy} onClick={()=>void dispatch({type:'theme',theme:dark?'light':'dark'})}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button>
         <button className="icon-button settings-toggle" aria-label="Settings & backups" onClick={()=>goPage('settings')}><Settings2 size={18}/></button>
@@ -90,7 +91,7 @@ export function App() {
       {store.warning&&<div className="notice warning" role="alert"><Database size={18}/><span>{store.warning}</span><button className="text-button" onClick={()=>goPage('settings')}>Back up<ArrowRight size={15}/></button></div>}
       {issue&&<div className="notice warning" role="alert"><Clock3 size={18}/>{issue}</div>}
       {page==='daily' && <div className="page-enter">
-        <div className="desk-intro"><header className="page-heading"><p className="section-label"><span className="small-rule"/>INICET</p><h1>Daily <em>rounds.</em></h1><p>Five clinical questions across five subjects. Review the reasoning behind each answer as you go.</p></header><LibraryLink open={()=>goPage('bank')}/></div>
+        <div className="desk-intro"><header className="page-heading"><p className="section-label"><span className="small-rule"/>INI-CET EXAM PREPARATION</p><h1>Daily <em>rounds.</em></h1><p>A focused daily practice for INI-CET: five clinical questions across five subjects, with explanations for every answer.</p></header><LibraryLink open={()=>goPage('bank')}/></div>
         <Stats stats={stats}/>
         <div className="challenge-heading"><div className="section-line"><h2>{selected===today?'Question of the day':'From the archive'}</h2></div>
           <div className="date-navigation"><button className="icon-button" aria-label="Previous challenge" disabled={!available||selected<=ARCHIVE_START} onClick={()=>openDate(addDays(selected,-1))}><ChevronLeft size={16}/></button>

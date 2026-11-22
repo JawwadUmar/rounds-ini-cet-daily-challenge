@@ -45,14 +45,14 @@ export function Library({study,busy,dispatch}:{study:Record<string,Attempt>;busy
     requestAnimationFrame(()=> (document.getElementById('entry-'+id) || opener.current)?.focus());
   }
   return <div className="page-enter">
-    <header className="page-heading"><p className="section-label"><LibraryBig size={15}/>INICET · 2020–2025</p><h1>The PYQ <em>library.</em></h1></header>
+    <header className="page-heading"><p className="section-label"><LibraryBig size={15}/>INI-CET · 2020–2025</p><h1>The PYQ <em>library.</em></h1></header>
     {shown ? <>
       <div className="library-reader-nav"><button className="text-button" onClick={back}><ArrowLeft size={16}/>Back to papers</button><span>{year==='all'?'Full curriculum':year}{subject==='all'?'':` / ${subject}`} · Question {current+1} of {items.length}</span></div>
       <section className="panel library-reader"><QuestionReader key={shown.id} question={shown} attempt={study[shown.id]??fresh} label="library question" busy={busy}
         select={letter=>dispatch({type:'study-select',id:shown.id,selected:letter})} submit={()=>dispatch({type:'study-submit',id:shown.id})} explanation={explanation} setExplanation={setExplanation}/>
         <div className="quiz-footer"><button className="text-button" disabled={current===0} onClick={()=>open(current-1)}><ArrowLeft size={16}/>Previous question</button><button className="text-button" disabled={current===items.length-1} onClick={()=>open(current+1)}>Next question<ArrowRight size={16}/></button></div>
       </section></> : <>
-      <section className="volume-section" aria-label="Browse by INICET year"><div className="section-line"><h2>Year-wise papers</h2><span className="fine-rule"/></div>
+      <section className="volume-section" aria-label="Browse by INI-CET year"><div className="section-line"><h2>Year-wise papers</h2><span className="fine-rule"/></div>
         <div className="volume-shelf">{YEARS.map((y,i)=><button key={y} aria-label={`Browse ${y} papers`} aria-pressed={year===y} className={`volume tone-${i%4}`} onClick={()=>{setYear(year===y?'all':y);setPage(0);}}>
           <span className="volume-lines" aria-hidden="true"/><strong>{y}</strong><BookOpen size={16} strokeWidth={1.4}/></button>)}</div>
       </section>

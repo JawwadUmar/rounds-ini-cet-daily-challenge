@@ -44,7 +44,7 @@ export function applyAction(progress: Progress, action: Action, now = new Date()
   const next = structuredClone(progress);
   if (action.type === 'theme') next.preferences.theme = action.theme;
   else if(action.type==='clear-pyq-performance') {
-    if(!Number.isInteger(action.year)||action.year<2020||action.year>2025)throw new Error('Choose a valid INICET year.');
+    if(!Number.isInteger(action.year)||action.year<2020||action.year>2025)throw new Error('Choose a valid INI-CET year.');
     for(const id of Object.keys(next.study??{})) {
       const q=byId.get(id);
       if(q?.examYear===action.year&&(!action.subject||q.subject===action.subject))delete next.study![id];

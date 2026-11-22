@@ -54,7 +54,7 @@ export function QuestionReader({question:q,attempt,busy,label,select,submit,expl
   const locked = attempt.submitted;
   const distractors = LETTERS.filter(l=>l!==q.correct && q.optionExplanations[l]);
   return <article className="quiz-body">
-    <div className="reader-top"><span className="reader-identifiers"><span className="subject-tag">{q.subject}</span>{q.examYear && <span className="source-tag">{q.paperSession?`INICET ${q.paperSession} · Q${q.printedNumber}`:`INICET ${q.examYear}`}</span>}</span><span className="reader-tools">
+    <div className="reader-top"><span className="reader-identifiers"><span className="subject-tag">{q.subject}</span>{q.examYear && <span className="source-tag">{q.paperSession?`INI-CET ${q.paperSession} · Q${q.printedNumber}`:`INI-CET ${q.examYear}`}</span>}</span><span className="reader-tools">
       {q.difficulty && <span className="difficulty" aria-label={q.difficultyEstimated?`Estimated difficulty: ${q.difficulty}`:`Difficulty: ${q.difficulty}`} title={q.difficultyEstimated?'Estimated difficulty':'Difficulty'}>{q.difficulty}{q.difficultyEstimated?' · est.':''}</span>}
       {bookmark && <button className="icon-button" onClick={bookmark} aria-label={bookmarked?'Remove question from saved review':'Save question for review'} aria-pressed={!!bookmarked}><Bookmark size={18} fill={bookmarked?'currentColor':'none'}/></button>}
     </span></div>
