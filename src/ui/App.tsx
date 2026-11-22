@@ -90,7 +90,7 @@ export function App() {
       {store.warning&&<div className="notice warning" role="alert"><Database size={18}/><span>{store.warning}</span><button className="text-button" onClick={()=>goPage('settings')}>Back up<ArrowRight size={15}/></button></div>}
       {issue&&<div className="notice warning" role="alert"><Clock3 size={18}/>{issue}</div>}
       {page==='daily' && <div className="page-enter">
-        <div className="desk-intro"><header className="page-heading"><p className="section-label"><span className="small-rule"/>INICET 2027</p><h1>Daily <em>rounds.</em></h1><p>Five clinical questions across five subjects. Review the reasoning behind each answer as you go.</p></header><LibraryLink open={()=>goPage('bank')}/></div>
+        <div className="desk-intro"><header className="page-heading"><p className="section-label"><span className="small-rule"/>INICET</p><h1>Daily <em>rounds.</em></h1><p>Five clinical questions across five subjects. Review the reasoning behind each answer as you go.</p></header><LibraryLink open={()=>goPage('bank')}/></div>
         <Stats stats={stats}/>
         <div className="challenge-heading"><div className="section-line"><h2>{selected===today?'Question of the day':'From the archive'}</h2></div>
           <div className="date-navigation"><button className="icon-button" aria-label="Previous challenge" disabled={!available||selected<=ARCHIVE_START} onClick={()=>openDate(addDays(selected,-1))}><ChevronLeft size={16}/></button>
