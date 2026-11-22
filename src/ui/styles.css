@@ -600,6 +600,7 @@ button:disabled{opacity:1;color:var(--muted);cursor:not-allowed}
 .greeting{margin:0 0 30px}
 .greeting h1{font-size:clamp(25px,4vw,30px);font-weight:680;line-height:1.15;letter-spacing:-.04em;color:var(--ink);margin-bottom:8px}
 .greeting p{max-width:610px;color:var(--muted);font-size:15px;line-height:1.6}
+.greeting cite{font-style:normal}
 .challenge-heading{align-items:flex-end;gap:16px;margin-bottom:17px}
 .daily-heading-copy{display:grid;gap:5px}
 .challenge-date{font-size:11px;font-weight:600;letter-spacing:.075em;text-transform:uppercase;color:var(--muted)}

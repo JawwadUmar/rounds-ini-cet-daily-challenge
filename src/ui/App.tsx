@@ -6,6 +6,7 @@ import { questionsForDate } from '../core/schedule';
 import { copyText, resultText } from '../core/share';
 import { statistics } from '../core/stats';
 import { ProgressStore } from '../core/storage';
+import { quoteForDay } from '../data/quotes';
 import { ActivityGraph, Modal, MonthCalendar } from './components';
 import { Library } from './Library';
 import { Quiz } from './Quiz';
@@ -25,6 +26,7 @@ export function App() {
   const closeModal=useCallback(()=>setModal(null),[]);
   const closeMenu=useCallback(()=>setMenu(false),[]);
   const today=dayInZone(now,progress?.preferences.timeZone??'Asia/Kolkata');
+  const greetingQuote=quoteForDay(today);
   const selected=date&&navigable(date,today)?date:today;
   useEffect(()=>{
     let mounted=true;
@@ -91,7 +93,7 @@ export function App() {
       {store.warning&&<div className="notice warning" role="alert"><Database size={18}/><span>{store.warning}</span><button className="text-button" onClick={()=>goPage('settings')}>Back up<ArrowRight size={15}/></button></div>}
       {issue&&<div className="notice warning" role="alert"><Clock3 size={18}/>{issue}</div>}
       {page==='daily' && <div className="page-enter">
-        <header className="greeting"><h1>Hello, Doctor.</h1><p>Precision beats volume. One focused round today brings you closer to the seat you’ve earned.</p></header>
+        <header className="greeting"><h1>Hello, Doctor.</h1><p>{greetingQuote.text} <cite>— {greetingQuote.author}</cite></p></header>
         <div className="challenge-heading"><div className="daily-heading-copy"><p className="challenge-date">{formatDay(selected,{weekday:'long',month:'short',day:'numeric'})}</p><h2>{selected===today?'Daily Challenge':'Challenge Archive'}</h2></div>
           <div className="date-navigation"><button className="icon-button" aria-label="Previous challenge" disabled={!available||selected<=ARCHIVE_START} onClick={()=>openDate(addDays(selected,-1))}><ChevronLeft size={16}/></button>
             <label className="date-label"><CalendarDays size={15}/><span>{formatDay(selected,{day:'numeric',month:'short',year:'numeric'})}</span><input aria-label="Choose challenge date" type="date" min={ARCHIVE_START} max={today} value={selected} onChange={e=>openDate(e.target.value)}/></label>
