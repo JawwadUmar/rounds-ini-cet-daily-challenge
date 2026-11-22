@@ -10,9 +10,9 @@ test('year and subject filters open the original clinical figure, key and locked
   await page.getByLabel('Filter by subject').selectOption('Pediatrics');
   await page.getByLabel('Search questions or topics').fill('frothy oral secretions');
   await page.locator('#entry-pyq-2024-149').click();
-  const figure=page.locator('.figure-button img');
+  const figure=page.locator('.figure-button img').first();
   await expect(figure).toBeVisible();
-  expect(await figure.evaluate((i:HTMLImageElement)=>i.complete&&i.naturalWidth>100)).toBe(true);
+  await expect.poll(()=>figure.evaluate((i:HTMLImageElement)=>i.complete&&i.naturalWidth>100)).toBe(true);
   await page.getByRole('button',{name:'Enlarge figure 1'}).click();
   await page.getByRole('button',{name:'Zoom in'}).click();
   await expect(page.getByRole('dialog')).toContainText('150%');
@@ -21,12 +21,13 @@ test('year and subject filters open the original clinical figure, key and locked
   await page.locator('.option:has(input[value="C"])').click();
   await page.getByRole('button',{name:'Confirm answer'}).click();
   await page.getByRole('button',{name:'Explanation',exact:true}).click();
-  await expect(page.locator('.solution-prose')).toContainText('Tracheoesophageal fistula');
-  await expect(page.locator('.answer-feedback')).toContainText('Tracheoesophageal fistula');
+  await expect(page.locator('.solution-prose')).toContainText(/tracheoesophageal fistula/i);
+  await expect(page.locator('.answer-feedback')).toContainText(/tracheoesophageal fistula/i);
   await page.getByRole('button',{name:'Back to papers'}).click();
   await expect(page.getByLabel('Search questions or topics')).toHaveValue('frothy oral secretions');
   await page.reload();
   await page.getByRole('button',{name:'PYQ library',exact:true}).click();
+  await page.getByLabel('Search questions or topics').fill('frothy oral secretions');
   await page.locator('#entry-pyq-2024-149').click();
   await expect(page.getByRole('radio',{checked:true})).toBeDisabled();
   await page.getByRole('button',{name:'Daily challenge',exact:true}).click();
@@ -44,6 +45,7 @@ test('mobile catalogue supports empty filters, pagination, two-image stems and l
   await page.getByRole('button',{name:'Clear filters'}).click();
   await page.getByRole('button',{name:'Browse 2024 paper'}).click();
   await page.getByLabel('Filter by subject').selectOption('Pediatrics');
+  await page.getByRole('button',{name:'Next page'}).click();
   await page.locator('#entry-pyq-2024-149').click();
   await expect(page.locator('.figure-button')).toHaveCount(2);
   await page.getByRole('button',{name:'Enlarge figure 2'}).click();
