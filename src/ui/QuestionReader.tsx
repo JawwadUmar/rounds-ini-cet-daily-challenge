@@ -1,5 +1,5 @@
 import { useCallback, useId, useState } from 'react';
-import { ArrowRight, Bookmark, BookOpen, Check, CheckCircle2, ChevronDown, LockKeyhole, Maximize2, Minus, Plus, X } from 'lucide-react';
+import { ArrowRight, Bookmark, BookOpen, Check, CheckCircle2, ChevronDown, CircleX, LockKeyhole, Maximize2, Minus, Plus, X } from 'lucide-react';
 import { LETTERS, type Letter, type Question, type QuestionImage } from '../data/types';
 import type { Attempt } from '../core/model';
 import { Modal } from './components';
@@ -72,7 +72,7 @@ export function QuestionReader({question:q,attempt,busy,label,select,submit,expl
         </label>;
       })}
     </fieldset>
-    {locked && <div role="status" className={`answer-feedback ${q.reviewOnly?'reviewed':correct?'correct':'incorrect'}`}>{q.reviewOnly?<BookOpen size={18}/>:correct?<CheckCircle2 size={18}/>:<BookOpen size={18}/>}<div><strong>{q.reviewOnly?'Read-only item':correct?'Correct answer':'Incorrect answer'}</strong><p>{q.reviewOnly?'This source item is not scored. Open the solution to review its printed key.':q.answerText??`${q.correct}. ${q.options[q.correct]}`}</p></div></div>}
+    {locked && <div role="status" className={`answer-feedback ${q.reviewOnly?'reviewed':correct?'correct':'incorrect'}`}>{q.reviewOnly?<BookOpen size={18}/>:correct?<CheckCircle2 size={18}/>:<CircleX size={18}/>}<div><strong>{q.reviewOnly?'Read-only item':correct?'Correct answer':'Incorrect answer'}</strong><p>{q.reviewOnly?'This source item is not scored. Open the solution to review its printed key.':q.answerText??`${q.correct}. ${q.options[q.correct]}`}</p></div></div>}
     <div className="answer-actions">
       <span className="saved-hint"><LockKeyhole size={13}/>{q.reviewOnly?'Read-only question':locked?'Answer locked':'Choose one answer'}</span>
       {dailyChallenge&&q.reviewOnly&&!locked ? <button className="button primary" disabled={busy} onClick={submit}>Continue · not scored<ArrowRight size={15}/></button>

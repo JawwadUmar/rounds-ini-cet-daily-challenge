@@ -66,7 +66,6 @@ export function SettingsView({progress,today,busy,dispatch,store}:{progress:Prog
 
 export function LibraryLink({open}:{open:()=>void}) {
   return <button className="library-link" onClick={open}>
-    <span className="library-link-text"><span className="library-years">2020 — 2025</span><strong>Previous year<br/><em>papers</em></strong><span className="library-cta">Browse library <ArrowRight size={14}/></span></span>
-    <span className="book-art" aria-hidden="true"><i className="book-back"/><i className="book-mid"/><i className="book-front"><span/><BookOpen size={31} strokeWidth={1.1}/><span/></i></span>
+    <span className="library-link-text"><span className="library-years">INI-CET · 2020–2025</span><strong>Browse the PYQ library</strong><span className="library-cta">Filter by subject or year <ArrowRight size={14}/></span></span>
   </button>;
 }

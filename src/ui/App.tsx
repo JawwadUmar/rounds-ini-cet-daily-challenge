@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, BookMarked, BookOpen, CalendarDays, Check, ChevronLeft, ChevronRight, CircleHelp, Clock3, Copy, Database, Menu, Moon, Settings2, Share2, ShieldCheck, Sun, X } from 'lucide-react';
+import { ArrowRight, BookMarked, BookOpen, CalendarDays, Check, ChevronLeft, ChevronRight, CircleHelp, Clock3, Copy, Database, Flame, Menu, Moon, Settings2, Share2, ShieldCheck, Stethoscope, Sun, X } from 'lucide-react';
 import { addDays, ARCHIVE_START, dayInZone, formatDay, navigable } from '../core/dates';
-import { clockIssue, createDay, isComplete, type Action, type Progress } from '../core/model';
+import { clockIssue, createDay, isComplete, submittedCount, type Action, type Progress } from '../core/model';
 import { questionsForDate } from '../core/schedule';
 import { copyText, resultText } from '../core/share';
 import { statistics } from '../core/stats';
@@ -35,7 +35,7 @@ export function App() {
     document.addEventListener('visibilitychange',wake);
     return ()=>{mounted=false;unsubscribe();clearInterval(timer);document.removeEventListener('visibilitychange',wake);};
   },[]);
-  useEffect(()=>{if(progress)document.documentElement.dataset.theme=progress.preferences.theme;},[progress?.preferences.theme]);
+  useEffect(()=>{if(progress){document.documentElement.dataset.theme=progress.preferences.theme;try{localStorage.setItem('rounds-inicet-theme-v1',progress.preferences.theme);}catch{/* Theme still applies for this session. */}}},[progress?.preferences.theme]);
   useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>setToast(''),4000);return()=>clearTimeout(timer);},[toast]);
   useEffect(()=>{
     if(!date||!navigable(date,today)){setDate(null);setIndex(0);setResults(true);setExplanation(false);setModal(null);setMonth(today.slice(0,7));}
@@ -80,10 +80,10 @@ export function App() {
   return <div className="app-shell">
     <a href="#main-content" className="skip-link">Skip to content</a>
     <header className="masthead"><div className="masthead-inner">
-      <button className="brand" aria-label="Rounds home" onClick={()=>goPage('daily')}><span className="brand-mark"><BookOpen size={21} strokeWidth={1.5}/></span><span>rounds<span>.</span></span></button>
+      <button className="brand" aria-label="Rounds home" onClick={()=>goPage('daily')}><span className="brand-mark"><Stethoscope size={19} strokeWidth={1.7}/></span><span>Rounds</span></button>
       <div className="exam-identity"><span>PREPARATION FOR</span><strong>INI-CET</strong></div>
       <nav className="desktop-nav" aria-label="Main navigation">{links}</nav>
-      <div className="mast-tools"><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} title={dark?'Light theme':'Dark theme'} disabled={busy} onClick={()=>void dispatch({type:'theme',theme:dark?'light':'dark'})}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button>
+      <div className="mast-tools"><button className="streak-pill" aria-label={`Current streak: ${stats.current} ${stats.current===1?'day':'days'}. View progress`} onClick={()=>goPage('progress')}><Flame size={15}/><span>{stats.current}</span></button><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} title={dark?'Light theme':'Dark theme'} disabled={busy} onClick={()=>void dispatch({type:'theme',theme:dark?'light':'dark'})}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button>
         <button className="icon-button settings-toggle" aria-label="Settings & backups" onClick={()=>goPage('settings')}><Settings2 size={18}/></button>
         <button className="icon-button mobile-menu" aria-label="Open navigation" aria-expanded={menu} onClick={()=>setMenu(true)}><Menu size={22}/></button></div>
     </div></header>
@@ -91,15 +91,15 @@ export function App() {
       {store.warning&&<div className="notice warning" role="alert"><Database size={18}/><span>{store.warning}</span><button className="text-button" onClick={()=>goPage('settings')}>Back up<ArrowRight size={15}/></button></div>}
       {issue&&<div className="notice warning" role="alert"><Clock3 size={18}/>{issue}</div>}
       {page==='daily' && <div className="page-enter">
-        <div className="desk-intro"><header className="page-heading"><p className="section-label"><span className="small-rule"/>INI-CET EXAM PREPARATION</p><h1>Daily <em>rounds.</em></h1><p>A focused daily practice for INI-CET: five clinical questions across five subjects, with explanations for every answer.</p></header><LibraryLink open={()=>goPage('bank')}/></div>
-        <Stats stats={stats}/>
-        <div className="challenge-heading"><div className="section-line"><h2>{selected===today?'Question of the day':'From the archive'}</h2></div>
+        <header className="greeting"><h1>Hello, Doctor.</h1><p>Precision beats volume. One focused round today brings you closer to the seat you’ve earned.</p></header>
+        <div className="challenge-heading"><div className="daily-heading-copy"><p className="challenge-date">{formatDay(selected,{weekday:'long',month:'short',day:'numeric'})}</p><h2>{selected===today?'Daily Challenge':'Challenge Archive'}</h2></div>
           <div className="date-navigation"><button className="icon-button" aria-label="Previous challenge" disabled={!available||selected<=ARCHIVE_START} onClick={()=>openDate(addDays(selected,-1))}><ChevronLeft size={16}/></button>
             <label className="date-label"><CalendarDays size={15}/><span>{formatDay(selected,{day:'numeric',month:'short',year:'numeric'})}</span><input aria-label="Choose challenge date" type="date" min={ARCHIVE_START} max={today} value={selected} onChange={e=>openDate(e.target.value)}/></label>
             <button className="icon-button" aria-label="Next challenge" disabled={selected>=today} onClick={()=>openDate(addDays(selected,1))}><ChevronRight size={16}/></button>
             {selected<today&&<button className="today-link" onClick={()=>openDate(today)}>Today</button>}</div>
         </div>
         {selected<today&&<p className="notice catchup"><CalendarDays size={16}/>Catch-up challenge. Completion counts toward your calendar and total.</p>}
+        {available&&<div className="challenge-progress"><div className="challenge-progress-copy"><span>Question {index+1} of {questions.length}</span><span>{submittedCount(record)} / {questions.length} confirmed</span></div><div className="challenge-progress-track" role="progressbar" aria-label={`Question ${index+1} of ${questions.length}`} aria-valuemin={1} aria-valuemax={questions.length} aria-valuenow={index+1}><span style={{width:`${(index+1)/questions.length*100}%`}}/></div></div>}
         <div className="challenge-layout">
           {available?<Quiz questions={questions} day={record} index={index} setIndex={changeIndex} busy={busy}
             select={letter=>void dispatch({type:'select',date:selected,id:question.id,selected:letter})}
@@ -110,7 +110,7 @@ export function App() {
           :<section className="panel empty-state"><h2>Check your device date</h2><p>The archive starts on 1 January 2026.</p></section>}
           <aside className="desk-aside"><MonthCalendar month={month||today.slice(0,7)} setMonth={setMonth} today={today} selected={selected} progress={progress} openDate={openFromArchive}/>
             {available&&<section className="contents-panel"><h3><BookMarked size={17}/>In this challenge</h3><ol>{questions.map((q,i)=><li key={q.id}><button className={index===i&&!(done&&results)?'current':''} onClick={()=>changeIndex(i)}><span>{String(i+1).padStart(2,'0')}</span>{q.subject}{record.attempts[q.id]?.submitted?<Check size={14}/>:<ChevronRight size={13}/>}</button></li>)}</ol></section>}</aside>
-        </div><ActivityGraph today={today} progress={progress} openDate={openFromArchive}/>
+        </div><ActivityGraph today={today} progress={progress} openDate={openFromArchive}/><LibraryLink open={()=>goPage('bank')}/>
       </div>}
       {page==='bank'&&<Library study={progress.study??{}} busy={busy} dispatch={a=>void dispatch(a)}/>}
       {page==='archive'&&<Archive today={today} progress={progress} openDate={openFromArchive}/>}

@@ -11,11 +11,7 @@ interface QuizProps {
 export function Quiz(p:QuizProps) {
   const {questions,day,index,results}=p;
   const q=questions[index];
-  return <section className="panel quiz-panel" aria-label="Daily question challenge">
-    <div className="quiz-tabs-bar"><div className="question-tabs" aria-label="Question navigation">{questions.map((q,i)=>
-      <button key={q.id} onClick={()=>p.setIndex(i)} aria-label={`Question ${i+1}, ${q.subject}${day.attempts[q.id].submitted?', answered':''}`} aria-current={index===i&&!results?'step':undefined} className={`question-tab ${index===i&&!results?'active':''} ${day.attempts[q.id].submitted?'answered':''}`}>
-        {day.attempts[q.id].submitted?<Check size={16}/>:String(i+1).padStart(2,'0')}
-      </button>)}</div><span className="quiz-count">{submittedCount(day)} / 5 confirmed</span></div>
+  return <div className="quiz-flow"><section className="panel quiz-panel" aria-label="Daily question challenge">
     {results?<div className="results-view">
       <span className="finish-seal"><Check size={30}/></span><h2>Daily challenge complete.</h2>
       <div className="score-display"><strong>{scoreDay(day)}<span>/ {scoredCount(day)}</span></strong><small>Correct answers{scoredCount(day)<5?' · read-only items excluded':''}</small></div>
@@ -25,7 +21,8 @@ export function Quiz(p:QuizProps) {
       {!p.durable&&<p>Export a backup in Settings to keep this result.</p>}
     </div>:<>
       <QuestionReader key={q.id} question={q} attempt={day.attempts[q.id]} label={`question ${index+1}`} busy={p.busy} select={p.select} submit={p.submit} explanation={p.explanation} setExplanation={p.setExplanation} dailyChallenge bookmark={p.bookmark} bookmarked={p.bookmarked}/>
-      <div className="quiz-footer"><button className="text-button" disabled={index===0} onClick={()=>p.setIndex(index-1)}><ArrowLeft size={15}/>Previous</button><button className="text-button" disabled={index===4} onClick={()=>p.setIndex(index+1)}>Next question<ArrowRight size={15}/></button></div>
     </>}
-  </section>;
+  </section>{!results&&<div className="quiz-footer challenge-footer"><button className="text-button" disabled={index===0} onClick={()=>p.setIndex(index-1)}><ArrowLeft size={15}/>Previous</button>
+    <div className="quiz-navigation"><div className="question-tabs" aria-label="Question navigation">{questions.map((item,i)=><button key={item.id} onClick={()=>p.setIndex(i)} aria-label={`Question ${i+1}, ${item.subject}${day.attempts[item.id].submitted?', answered':''}`} aria-current={index===i?'step':undefined} className={`question-tab ${index===i?'active':''} ${day.attempts[item.id].submitted?'answered':''}`}>{day.attempts[item.id].submitted?<Check size={12}/>:String(i+1)}</button>)}</div><span className="quiz-count">{submittedCount(day)} / {questions.length} confirmed</span></div>
+    <button className="text-button" disabled={index===questions.length-1} onClick={()=>p.setIndex(index+1)}>Next question<ArrowRight size={15}/></button></div>}</div>;
 }
