@@ -6,7 +6,7 @@ import { addDays } from '../../src/core/dates';
 const DATE='2026-11-18';
 async function boot(page:Page) {
   await page.clock.install({time:new Date('2026-11-18T06:00:00Z')});
-  await page.goto('/'); await expect(page.getByRole('heading',{name:'Hello, Doctor.'})).toBeVisible();
+  await page.goto('/'); await expect(page.getByRole('heading',{name:'Hello, Doctor. 🩺'})).toBeVisible();
 }
 async function answer(page:Page,letter='A') {
   await page.locator(`.option:has(input[value="${letter}"])`).click();

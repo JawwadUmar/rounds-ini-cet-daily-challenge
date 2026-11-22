@@ -82,7 +82,7 @@ export function App() {
   return <div className="app-shell">
     <a href="#main-content" className="skip-link">Skip to content</a>
     <header className="masthead"><div className="masthead-inner">
-      <button className="brand" aria-label="Rounds home" onClick={()=>goPage('daily')}><span className="brand-mark"><Stethoscope size={19} strokeWidth={1.7}/></span><span>Rounds</span></button>
+      <button className="brand" aria-label="Rounds home" onClick={()=>goPage('daily')}><span className="brand-mark"><BookOpen size={19} strokeWidth={1.7}/></span><span>Rounds</span></button>
       <div className="exam-identity"><span>PREPARATION FOR</span><strong>INI-CET</strong></div>
       <nav className="desktop-nav" aria-label="Main navigation">{links}</nav>
       <div className="mast-tools"><button className="streak-pill" aria-label={`Current streak: ${stats.current} ${stats.current===1?'day':'days'}. View progress`} onClick={()=>goPage('progress')}><Flame size={15}/><span>{stats.current}</span></button><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} title={dark?'Light theme':'Dark theme'} disabled={busy} onClick={()=>void dispatch({type:'theme',theme:dark?'light':'dark'})}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button>
@@ -93,7 +93,7 @@ export function App() {
       {store.warning&&<div className="notice warning" role="alert"><Database size={18}/><span>{store.warning}</span><button className="text-button" onClick={()=>goPage('settings')}>Back up<ArrowRight size={15}/></button></div>}
       {issue&&<div className="notice warning" role="alert"><Clock3 size={18}/>{issue}</div>}
       {page==='daily' && <div className="page-enter">
-        <header className="greeting"><h1>Hello, Doctor.</h1><p>{greetingQuote.text} <cite>— {greetingQuote.author}</cite></p></header>
+        <header className="greeting"><h1>Hello, Doctor. 🩺</h1><p>{greetingQuote.text} <cite>— {greetingQuote.author}</cite></p></header>
         <div className="challenge-heading"><div className="daily-heading-copy"><p className="challenge-date">{formatDay(selected,{weekday:'long',month:'short',day:'numeric'})}</p><h2>{selected===today?'Daily Challenge':'Challenge Archive'}</h2></div>
           <div className="date-navigation"><button className="icon-button" aria-label="Previous challenge" disabled={!available||selected<=ARCHIVE_START} onClick={()=>openDate(addDays(selected,-1))}><ChevronLeft size={16}/></button>
             <label className="date-label"><CalendarDays size={15}/><span>{formatDay(selected,{day:'numeric',month:'short',year:'numeric'})}</span><input aria-label="Choose challenge date" type="date" min={ARCHIVE_START} max={today} value={selected} onChange={e=>openDate(e.target.value)}/></label>
