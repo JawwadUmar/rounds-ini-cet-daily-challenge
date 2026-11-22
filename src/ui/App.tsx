@@ -82,12 +82,12 @@ export function App() {
   return <div className="app-shell">
     <a href="#main-content" className="skip-link">Skip to content</a>
     <header className="masthead"><div className="masthead-inner">
-      <button className="brand" aria-label="Rounds home" onClick={()=>goPage('daily')}><span className="brand-mark"><BookOpen size={19} strokeWidth={1.7}/></span><span>Rounds</span></button>
-      <div className="exam-identity"><span>PREPARATION FOR</span><strong>INI-CET</strong></div>
+      <div className="brand-lockup"><button className="brand" aria-label="Rounds home" onClick={()=>goPage('daily')}><span className="brand-mark"><BookOpen size={29} strokeWidth={1.8}/></span><span>Rounds</span></button>
+        <span className="exam-identity">INI-CET</span></div>
       <nav className="desktop-nav" aria-label="Main navigation">{links}</nav>
-      <div className="mast-tools"><button className="streak-pill" aria-label={`Current streak: ${stats.current} ${stats.current===1?'day':'days'}. View progress`} onClick={()=>goPage('progress')}><Flame size={15}/><span>{stats.current}</span></button><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} title={dark?'Light theme':'Dark theme'} disabled={busy} onClick={()=>void dispatch({type:'theme',theme:dark?'light':'dark'})}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button>
+      <div className="mast-tools"><button className="streak-pill" aria-label={`Current streak: ${stats.current} ${stats.current===1?'day':'days'}. View progress`} onClick={()=>goPage('progress')}><Flame size={15}/><span>{stats.current}</span></button><span className="tools-divider" aria-hidden="true"/><button className="icon-button theme-toggle" aria-label={dark?'Use light theme':'Use dark theme'} title={dark?'Light theme':'Dark theme'} disabled={busy} onClick={()=>void dispatch({type:'theme',theme:dark?'light':'dark'})}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button>
         <button className="icon-button settings-toggle" aria-label="Settings & backups" onClick={()=>goPage('settings')}><Settings2 size={18}/></button>
-        <button className="icon-button mobile-menu" aria-label="Open navigation" aria-expanded={menu} onClick={()=>setMenu(true)}><Menu size={22}/></button></div>
+        <button className="icon-button mobile-menu" aria-label="Open navigation" aria-expanded={menu} onClick={()=>setMenu(true)}><Menu size={21}/></button></div>
     </div></header>
     <main id="main-content" className="main-content">
       {store.warning&&<div className="notice warning" role="alert"><Database size={18}/><span>{store.warning}</span><button className="text-button" onClick={()=>goPage('settings')}>Back up<ArrowRight size={15}/></button></div>}
